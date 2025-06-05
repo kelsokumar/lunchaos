@@ -8,16 +8,29 @@ export default function CrowdPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/cafes-busy')
-      .then(res => res.json())
-      .then(data => {
-        setCafes(data.cafes || []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('Failed to load cafes');
-        setLoading(false);
-      });
+    let isMounted = true;
+    const fetchData = () => {
+      fetch('/api/cafes-busy')
+        .then(res => res.json())
+        .then(data => {
+          if (isMounted) {
+            setCafes(data.cafes || []);
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          if (isMounted) {
+            setError('Failed to load cafes');
+            setLoading(false);
+          }
+        });
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000); // 15 seconds
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -38,7 +51,7 @@ export default function CrowdPage() {
                   <thead>
                     <tr>
                       <th className="py-2 px-4 border-b font-bold text-lg bg-white">Cafe</th>
-                      <th className="py-2 px-4 border-b font-bold text-lg bg-white">Busy Score</th>
+                      <th className="py-2 px-4 border-b font-bold text-lg bg-white">Busy</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -50,11 +63,11 @@ export default function CrowdPage() {
                     )}
                     {!loading && !error && cafes.map((cafe, i) => {
                       const displayName = isNaN(Number(cafe.name)) ? cafe.name : `Cafe #${i + 1}`;
-                      const percent = ((cafe.busy - 50) / 60) * 100;
+                      const percent = ((cafe.busy - 50) / 110) * 100;
                       // Calculate color: green for low, yellow for mid, red for high
                       let barColor = 'bg-green-500';
                       if (cafe.busy > 90) barColor = 'bg-red-500';
-                      else if (cafe.busy > 70) barColor = 'bg-yellow-400';
+                      else if (cafe.busy > 80) barColor = 'bg-yellow-400';
                       return (
                         <tr key={i}>
                           <td className="py-2 px-4 border-b">{displayName}</td>
@@ -64,7 +77,7 @@ export default function CrowdPage() {
                                 className={`h-5 rounded-full transition-all duration-300 ${barColor}`}
                                 style={{ width: `${percent}%`, minWidth: 8 }}
                               />
-                              <span className="ml-2 text-xs text-gray-700">{cafe.busy}</span>
+                              <span className="ml-2 text-xs text-gray-700">{Math.round(percent)}</span>
                             </div>
                           </td>
                         </tr>

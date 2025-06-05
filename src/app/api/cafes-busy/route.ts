@@ -24,7 +24,7 @@ export async function GET() {
   // Generate random busy-ness for each cafe
   const cafesWithBusy = cafes.map(name => ({
     name,
-    busy: Math.floor(Math.random() * (110 - 50 + 1)) + 50
+    busy: Math.floor(Math.random() * (110 - 90 + 1)) + 90
   }));
 
   return NextResponse.json({ cafes: cafesWithBusy });
