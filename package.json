@@ -29,16 +29,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
-<<<<<<< HEAD
-    "react-hot-toast": "^2.5.2",
-=======
-<<<<<<< Updated upstream
-    "react-hot-toast": "^2.4.1",
-=======
     "react-hot-toast": "^2.5.2",
     "sharp": "^0.34.2",
->>>>>>> Stashed changes
->>>>>>> 591103c (fixed image upload, and also added username field)
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
     "uuid": "^11.1.0",
