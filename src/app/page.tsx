@@ -1,7 +1,11 @@
+"use client"
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export default function Home() {
+  const [rateModalOpen, setRateModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       {/* Admin Login Button */}
@@ -23,9 +27,12 @@ export default function Home() {
                 Rate, share, and explore the best dining spots in your building
               </p>
               <div className="flex gap-4">
-                <Link href="/rate" className="btn-primary bg-white text-primary-600 hover:bg-primary-50">
+                <button
+                  onClick={() => setRateModalOpen(true)}
+                  className="btn-primary bg-white text-primary-600 hover:bg-primary-50"
+                >
                   Rate Today's Meals
-                </Link>
+                </button>
                 <Link href="/crowd" className="btn-secondary bg-primary-500/20 backdrop-blur-sm text-white hover:bg-primary-500/30">
                   Check Crowd Levels
                 </Link>
@@ -125,6 +132,35 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Rate Modal */}
+      {rateModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-xs flex flex-col gap-4 items-center">
+            <h2 className="text-xl font-bold mb-2 text-primary-700">Rate Today's Meal</h2>
+            <Link
+              href="/rate/breakfast"
+              className="w-full text-center bg-primary-600 text-white py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors mb-2"
+              onClick={() => setRateModalOpen(false)}
+            >
+              Rate Breakfast
+            </Link>
+            <Link
+              href="/rate/lunch"
+              className="w-full text-center bg-primary-600 text-white py-2 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+              onClick={() => setRateModalOpen(false)}
+            >
+              Rate Lunch
+            </Link>
+            <button
+              className="mt-2 text-primary-600 hover:underline text-sm"
+              onClick={() => setRateModalOpen(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Main Features */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800">
@@ -174,22 +210,6 @@ export default function Home() {
                 <p className="text-gray-600 mb-4">Find the perfect spot with real-time occupancy data</p>
                 <Link href="/crowd" className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-1">
                   View Map <span className="group-hover:translate-x-1 transition-transform">→</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Food Voting Card */}
-          <div className="card group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                🎨
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Food Voting</h3>
-                <p className="text-gray-600 mb-4">Vote for your favorites and discover popular dishes</p>
-                <Link href="/vote" className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-1">
-                  Vote Now <span className="group-hover:translate-x-1 transition-transform">→</span>
                 </Link>
               </div>
             </div>
