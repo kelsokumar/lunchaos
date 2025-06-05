@@ -1,6 +1,25 @@
+"use client";
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function CrowdPage() {
+  const [cafes, setCafes] = useState<{ name: string; busy: number }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('/api/cafes-busy')
+      .then(res => res.json())
+      .then(data => {
+        setCafes(data.cafes || []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Failed to load cafes');
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -19,22 +38,34 @@ export default function CrowdPage() {
                   <thead>
                     <tr>
                       <th className="py-2 px-4 border-b font-bold text-lg bg-white">Cafe</th>
-                      <th className="py-2 px-4 border-b font-bold text-lg bg-white">Line Length</th>
+                      <th className="py-2 px-4 border-b font-bold text-lg bg-white">Busy Score</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="py-2 px-4 border-b">Cafe A</td>
-                      <td className="py-2 px-4 border-b text-center">-</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2 px-4 border-b">Cafe B</td>
-                      <td className="py-2 px-4 border-b text-center">-</td>
-                    </tr>
-                    <tr>
-                      <td className="py-2 px-4 border-b">Cafe C</td>
-                      <td className="py-2 px-4 border-b text-center">-</td>
-                    </tr>
+                    {loading && (
+                      <tr><td colSpan={2} className="py-4 text-center">Loading...</td></tr>
+                    )}
+                    {error && (
+                      <tr><td colSpan={2} className="py-4 text-center text-red-500">{error}</td></tr>
+                    )}
+                    {!loading && !error && cafes.map((cafe, i) => {
+                      // Normalize busy score for bar width (50-110 maps to 0-100%)
+                      const percent = ((cafe.busy - 50) / 60) * 100;
+                      return (
+                        <tr key={i}>
+                          <td className="py-2 px-4 border-b">{cafe.name}</td>
+                          <td className="py-2 px-4 border-b text-center">
+                            <div className="w-full h-5 bg-gray-200 rounded-full flex items-center">
+                              <div
+                                className="h-5 rounded-full bg-primary-500 transition-all duration-300"
+                                style={{ width: `${percent}%`, minWidth: 8 }}
+                              />
+                              <span className="ml-2 text-xs text-gray-700">{cafe.busy}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
