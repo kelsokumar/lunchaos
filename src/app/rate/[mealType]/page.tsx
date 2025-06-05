@@ -225,6 +225,14 @@ export default function RateMeal({ params }: { params: { mealType: string } }) {
               </label>
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-xl bg-white/50 backdrop-blur-sm hover:bg-white/70 transition-colors">
                 <div className="space-y-1 text-center">
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="mt-2"
+                  />
                   {imagePreview && (
                     <div className="mt-2">
                       <img
