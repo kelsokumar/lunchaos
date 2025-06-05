@@ -27,10 +27,16 @@ Before you begin, ensure you have the following installed:
 - [Chart.js](https://www.chartjs.org/) - Data visualization
 - [React Hot Toast](https://react-hot-toast.com/) - Toast notifications
 
+### Backend
+- [SQLite](https://www.sqlite.org/) - Lightweight database
+- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM
+- [better-sqlite3](https://github.com/WiseLibs/better-sqlite3) - SQLite driver
+
 ### Development Tools
 - [ESLint](https://eslint.org/) - Code linting
 - [PostCSS](https://postcss.org/) - CSS processing
 - [Autoprefixer](https://github.com/postcss/autoprefixer) - CSS vendor prefixing
+- [tsx](https://github.com/esbuild-kit/tsx) - TypeScript execution
 
 ## Features
 
@@ -86,12 +92,23 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
-4. **Start the development server**
+4. **Set up the database**
+   - Create a CSV file named `cafes_food_items.csv` with the following columns:
+     ```
+     cafe_id,building,cafe,food_item,ingredients
+     ```
+   - Run the database initialization script:
+     ```bash
+     npx tsx scripts/init-db.ts cafes_food_items.csv
+     ```
+   - This will create the SQLite database and import your data
+
+5. **Start the development server**
    ```bash
    npm run dev
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    - Visit [http://localhost:3000](http://localhost:3000)
 
 ## Project Structure
@@ -100,11 +117,14 @@ Before you begin, ensure you have the following installed:
 lunchaos/
 ├── src/
 │   ├── app/              # Next.js app directory
+│   │   ├── api/         # API routes
 │   │   ├── page.tsx     # Home page
 │   │   ├── layout.tsx   # Root layout
 │   │   └── globals.css  # Global styles
 │   ├── components/      # React components
 │   └── lib/            # Utility functions
+│       └── db/         # Database configuration
+├── scripts/            # Database scripts
 ├── public/             # Static assets
 ├── package.json        # Dependencies and scripts
 ├── tailwind.config.js  # Tailwind CSS configuration
@@ -120,6 +140,27 @@ lunchaos/
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+
+### Database Development
+
+1. **Schema Changes**
+   - Edit `src/lib/db/schema.ts` to modify database schema
+   - Delete `sqlite.db` to reset the database
+   - Run `npx tsx scripts/init-db.ts cafes_food_items.csv` to reinitialize
+
+2. **API Routes**
+   - API routes are in `src/app/api/`
+   - Use Drizzle ORM for database queries
+   - Example query:
+     ```typescript
+     const items = await db.select().from(foodItems).where(eq(foodItems.cafeId, cafeId))
+     ```
+
+3. **Database Reset**
+   ```bash
+   rm sqlite.db
+   npx tsx scripts/init-db.ts cafes_food_items.csv
+   ```
 
 ### Code Style
 
@@ -163,6 +204,16 @@ lunchaos/
    npm run dev
    # Ensure PostCSS is properly configured
    ```
+
+5. **Database errors**
+   - Ensure the CSV file format matches the schema
+   - Check that all required columns are present
+   - Verify the database file has write permissions
+   - Try resetting the database:
+     ```bash
+     rm sqlite.db
+     npx tsx scripts/init-db.ts cafes_food_items.csv
+     ```
 
 ## License
 
