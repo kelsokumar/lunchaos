@@ -5,6 +5,29 @@ import { useState } from 'react'
 
 export default function Home() {
   const [rateModalOpen, setRateModalOpen] = useState(false);
+  const [feedbackForm, setFeedbackForm] = useState({ name: '', email: '', text: '' });
+  const [feedbackStatus, setFeedbackStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  async function handleFeedbackSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setFeedbackStatus('submitting');
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedbackForm),
+      });
+      if (res.ok) {
+        setFeedbackStatus('success');
+        setFeedbackForm({ name: '', email: '', text: '' });
+        setTimeout(() => setFeedbackStatus('idle'), 2000);
+      } else {
+        setFeedbackStatus('error');
+      }
+    } catch {
+      setFeedbackStatus('error');
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -64,8 +87,7 @@ export default function Home() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div className="absolute bottom-3 left-3 right-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-base font-medium bg-black/40 px-3 py-1.5 rounded-full">Limited Time</span>
+                          <div className="flex items-center justify-end">
                             <span className="text-base font-medium bg-black/40 px-3 py-1.5 rounded-full">⭐ 4.8</span>
                           </div>
                         </div>
@@ -198,6 +220,20 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Feedback Card */}
+          <Link href="/feedback" className="card group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex items-start gap-4 p-6 pb-2">
+            <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+              💬
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2">Feedback</h3>
+              <p className="text-gray-600 mb-4">Share your thoughts or suggestions with us!</p>
+              <span className="text-primary-600 font-medium hover:text-primary-700 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Leave Feedback →
+              </span>
+            </div>
+          </Link>
 
           {/* Crowd Insights Card */}
           <div className="card group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">

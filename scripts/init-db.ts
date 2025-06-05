@@ -46,6 +46,16 @@ async function initDb() {
       )
     `)
 
+    await db.run(`
+      CREATE TABLE IF NOT EXISTS feedback (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        text TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+
     console.log('Database tables created successfully')
   } catch (error) {
     console.error('Error creating tables:', error)

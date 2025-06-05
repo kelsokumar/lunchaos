@@ -25,4 +25,12 @@ export const ratings = sqliteTable('ratings', {
   comment: text('comment'),
   imageUrl: text('image_url'),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
+})
+
+export const feedback = sqliteTable('feedback', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  email: text('email').notNull(),
+  text: text('text').notNull(),
+  createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
 }) 
