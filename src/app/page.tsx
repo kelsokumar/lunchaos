@@ -125,47 +125,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <Link href="/rate/breakfast" className="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative">
-            <div className="text-3xl mb-2">🌅</div>
-            <h3 className="font-semibold">Breakfast</h3>
-            <div className="absolute inset-0 bg-primary-600/90 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4 text-center">
-              Rate your breakfast experience and help others find the best morning meals
-            </div>
-          </Link>
-          <Link href="/rate/lunch" className="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative">
-            <div className="text-3xl mb-2">🌞</div>
-            <h3 className="font-semibold">Lunch</h3>
-            <div className="absolute inset-0 bg-primary-600/90 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4 text-center">
-              Share your lunch experience and help others make better choices
-            </div>
-          </Link>
-          <Link href="/crowd" className="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative">
-            <div className="text-3xl mb-2">🎯</div>
-            <h3 className="font-semibold">Crowd Map</h3>
-            <div className="absolute inset-0 bg-primary-600/90 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4 text-center">
-              Find the perfect spot with real-time occupancy data
-            </div>
-          </Link>
-          <Link href="/vote" className="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative">
-            <div className="text-3xl mb-2">🎨</div>
-            <h3 className="font-semibold">Vote</h3>
-            <div className="absolute inset-0 bg-primary-600/90 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4 text-center">
-              Vote for your favorite dishes and discover popular meals
-            </div>
-          </Link>
-          <Link href="/analytics" className="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group relative">
-            <div className="text-3xl mb-2">📈</div>
-            <h3 className="font-semibold">Analytics</h3>
-            <div className="absolute inset-0 bg-primary-600/90 text-white rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4 text-center">
-              Explore trends, insights, and top contributors
-            </div>
-          </Link>
-        </div>
-      </div>
-
       {/* Main Features */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800">
