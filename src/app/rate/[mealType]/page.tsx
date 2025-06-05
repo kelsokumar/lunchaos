@@ -35,6 +35,7 @@ export default function RateMeal({ params }: { params: { mealType: string } }) {
     food: '',
     rating: 5,
     comment: '',
+    username: '',
     image: null as File | null
   })
   const [imagePreview, setImagePreview] = useState<string | null>(null)
@@ -78,11 +79,21 @@ export default function RateMeal({ params }: { params: { mealType: string } }) {
     const file = e.target.files?.[0]
     if (file) {
       setFormData({ ...formData, image: file })
-      // Create preview URL
-      const previewUrl = URL.createObjectURL(file)
-      setImagePreview(previewUrl)
+      // Create data URL for preview
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
   }
+
+  // Cleanup preview URL when component unmounts
+  useEffect(() => {
+    return () => {
+      setImagePreview(null)
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -97,6 +108,7 @@ export default function RateMeal({ params }: { params: { mealType: string } }) {
       const formDataToSend = new FormData()
       formDataToSend.append('foodItemId', formData.food)
       formDataToSend.append('rating', formData.rating.toString())
+      formDataToSend.append('username', formData.username)
       if (formData.comment) {
         formDataToSend.append('comment', formData.comment)
       }
@@ -272,6 +284,24 @@ export default function RateMeal({ params }: { params: { mealType: string } }) {
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Username */}
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                Your Name
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={formData.username}
+                onChange={e => setFormData(f => ({ ...f, username: e.target.value }))}
+                className="w-full rounded-xl border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 bg-white/50 backdrop-blur-sm"
+                placeholder="Enter your name"
+                required
+                minLength={2}
+              />
             </div>
 
             {/* Rating */}

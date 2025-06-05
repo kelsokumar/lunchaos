@@ -15,6 +15,7 @@
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
+    "@types/uuid": "^10.0.0",
     "autoprefixer": "^10.4.17",
     "better-sqlite3": "^11.10.0",
     "chart.js": "^4.4.1",
@@ -28,9 +29,19 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
+<<<<<<< HEAD
     "react-hot-toast": "^2.5.2",
+=======
+<<<<<<< Updated upstream
+    "react-hot-toast": "^2.4.1",
+=======
+    "react-hot-toast": "^2.5.2",
+    "sharp": "^0.34.2",
+>>>>>>> Stashed changes
+>>>>>>> 591103c (fixed image upload, and also added username field)
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
+    "uuid": "^11.1.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
