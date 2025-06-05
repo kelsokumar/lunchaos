@@ -49,15 +49,19 @@ export default function CrowdPage() {
                       <tr><td colSpan={2} className="py-4 text-center text-red-500">{error}</td></tr>
                     )}
                     {!loading && !error && cafes.map((cafe, i) => {
-                      // Normalize busy score for bar width (50-110 maps to 0-100%)
+                      const displayName = isNaN(Number(cafe.name)) ? cafe.name : `Cafe #${i + 1}`;
                       const percent = ((cafe.busy - 50) / 60) * 100;
+                      // Calculate color: green for low, yellow for mid, red for high
+                      let barColor = 'bg-green-500';
+                      if (cafe.busy > 90) barColor = 'bg-red-500';
+                      else if (cafe.busy > 70) barColor = 'bg-yellow-400';
                       return (
                         <tr key={i}>
-                          <td className="py-2 px-4 border-b">{cafe.name}</td>
+                          <td className="py-2 px-4 border-b">{displayName}</td>
                           <td className="py-2 px-4 border-b text-center">
                             <div className="w-full h-5 bg-gray-200 rounded-full flex items-center">
                               <div
-                                className="h-5 rounded-full bg-primary-500 transition-all duration-300"
+                                className={`h-5 rounded-full transition-all duration-300 ${barColor}`}
                                 style={{ width: `${percent}%`, minWidth: 8 }}
                               />
                               <span className="ml-2 text-xs text-gray-700">{cafe.busy}</span>
