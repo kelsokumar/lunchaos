@@ -1,14 +1,19 @@
 import { db } from '../src/lib/db'
-import { cafes, foodItems } from '../src/lib/db/schema'
+import { cafes, foodItems, ratings } from '../src/lib/db/schema'
 import { parse } from 'csv-parse/sync'
 import fs from 'fs'
 import path from 'path'
 
 async function initDb() {
   try {
-    // Create tables
+    // Drop existing tables if they exist
+    await db.run('DROP TABLE IF EXISTS ratings')
+    await db.run('DROP TABLE IF EXISTS food_items')
+    await db.run('DROP TABLE IF EXISTS cafes')
+
+    // Create tables using schema
     await db.run(`
-      CREATE TABLE IF NOT EXISTS cafes (
+      CREATE TABLE cafes (
         id TEXT PRIMARY KEY,
         building TEXT NOT NULL,
         name TEXT NOT NULL
@@ -16,7 +21,7 @@ async function initDb() {
     `)
 
     await db.run(`
-      CREATE TABLE IF NOT EXISTS food_items (
+      CREATE TABLE food_items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         cafe_id TEXT NOT NULL,
         name TEXT NOT NULL,
@@ -29,9 +34,10 @@ async function initDb() {
     `)
 
     await db.run(`
-      CREATE TABLE IF NOT EXISTS ratings (
+      CREATE TABLE ratings (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         food_item_id INTEGER NOT NULL,
+        username TEXT NOT NULL,
         rating INTEGER NOT NULL,
         comment TEXT,
         image_url TEXT,

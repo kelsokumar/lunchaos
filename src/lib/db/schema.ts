@@ -20,6 +20,7 @@ export const foodItems = sqliteTable('food_items', {
 export const ratings = sqliteTable('ratings', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   foodItemId: integer('food_item_id').references(() => foodItems.id).notNull(),
+  username: text('username').notNull(),
   rating: integer('rating').notNull(),
   comment: text('comment'),
   imageUrl: text('image_url'),
